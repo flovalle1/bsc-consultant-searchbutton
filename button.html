@@ -1,0 +1,180 @@
+<style>
+    /* Floating Button */
+    #fab {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #1d4b73;
+        color: white;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-weight: bold;
+        z-index: 9999;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s;
+    }
+
+    #fab:hover {
+        background-color: #173a59;
+    }
+
+    /* Slide-out Panel */
+    #expert-panel {
+        position: fixed;
+        top: 0;
+        right: -33%;
+        width: 33%;
+        height: 100%;
+        background-color: #204060;
+        color: white;
+        box-shadow: -2px 0 6px rgba(0, 0, 0, 0.3);
+        transition: right 0.3s ease;
+        z-index: 9998;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #expert-panel.open {
+        right: 0;
+    }
+
+    /* Header */
+    #expert-panel h2 {
+        margin: 0 0 10px;
+        font-size: 1.4rem;
+    }
+
+    /* Search Input */
+    #expert-search {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    #expert-search input {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px 0 0 4px;
+    }
+
+    #expert-search button {
+        background: white;
+        border: none;
+        border-radius: 0 4px 4px 0;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    /* Consultant List */
+    .consultant {
+        background: #173a59;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .consultant:hover {
+        background: #102840;
+    }
+
+    .consultant img {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        margin-right: 10px;
+        object-fit: cover;
+    }
+
+    .consultant-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .consultant-name {
+        font-weight: bold;
+    }
+
+    .consultant-address {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+</style>
+
+<div id="fab">🔍</div>
+
+<div id="expert-panel">
+    <h2>Finde einen Experten in deiner Nähe!</h2>
+    <div id="expert-search">
+        <input type="text" id="search-input" placeholder="Name, Stadt oder PLZ">
+        <button>🔍</button>
+    </div>
+    <div id="consultant-list"></div>
+</div>
+
+<script>
+    (function () {
+        const consultants = [
+            {
+                name: "Wiesner, Finanzen + Versicherungen",
+                address: "Im Straßfeld 30, 97769 Bad Brückenau",
+                image: "https://via.placeholder.com/50x50.png?text=W",
+                link: "#"
+            },
+            {
+                name: "Jürgen Friedlein",
+                address: "Kronachallee 8, 96317 Kronach",
+                image: "https://via.placeholder.com/50x50.png?text=J",
+                link: "#"
+            },
+            {
+                name: "Rüdiger Knauf",
+                address: "Musterstraße 1, 12345 Musterstadt",
+                image: "https://via.placeholder.com/50x50.png?text=R",
+                link: "#"
+            }
+        ];
+
+        const fab = document.getElementById('fab');
+        const panel = document.getElementById('expert-panel');
+        const listContainer = document.getElementById('consultant-list');
+        const searchInput = document.getElementById('search-input');
+
+        function renderList(filter = "") {
+            listContainer.innerHTML = "";
+            consultants
+                .filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
+                .forEach(c => {
+                    const item = document.createElement('div');
+                    item.className = 'consultant';
+                    item.onclick = () => window.location.href = c.link;
+                    item.innerHTML = `
+            <img src="${c.image}" alt="${c.name}">
+            <div class="consultant-info">
+              <div class="consultant-name">${c.name}</div>
+              <div class="consultant-address">${c.address}</div>
+            </div>
+          `;
+                    listContainer.appendChild(item);
+                });
+        }
+
+        fab.addEventListener('click', () => {
+            panel.classList.toggle('open');
+            renderList();
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            renderList(e.target.value);
+        });
+    })();
+</script>
