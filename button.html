@@ -110,6 +110,22 @@
         font-size: 0.9rem;
         opacity: 0.8;
     }
+
+    /* Loading State */
+    .loading {
+        text-align: center;
+        padding: 20px;
+        opacity: 0.7;
+    }
+
+    .error {
+        text-align: center;
+        padding: 20px;
+        color: #ff6b6b;
+        background-color: rgba(255, 107, 107, 0.1);
+        border-radius: 4px;
+        margin: 10px 0;
+    }
 </style>
 
 <div id="fab">🔍</div>
@@ -125,74 +141,114 @@
 
 <script>
     (function () {
-        const consultants = [
-            {
-                name: "Wiesner, Finanzen + Versicherungen",
-                address: "Im Straßfeld 30, 97769 Bad Brückenau",
-                image: "https://randomuser.me/api/portraits/men/32.jpg",
-                link: "#"
-            },
-            {
-                name: "Jürgen Friedlein",
-                address: "Kronachallee 8, 96317 Kronach",
-                image: "https://randomuser.me/api/portraits/men/45.jpg",
-                link: "#"
-            },
-            {
-                name: "Rüdiger Knauf",
-                address: "Musterstraße 1, 12345 Musterstadt",
-                image: "https://randomuser.me/api/portraits/men/67.jpg",
-                link: "#"
-            },
-            {
-                name: "Sarah Mueller",
-                address: "Hauptstraße 15, 80331 München",
-                image: "https://randomuser.me/api/portraits/women/23.jpg",
-                link: "#"
-            },
-            {
-                name: "Michael Schmidt",
-                address: "Berliner Allee 42, 40212 Düsseldorf",
-                image: "https://randomuser.me/api/portraits/men/78.jpg",
-                link: "#"
-            },
-            {
-                name: "Anna Weber",
-                address: "Marktplatz 7, 70173 Stuttgart",
-                image: "https://randomuser.me/api/portraits/women/56.jpg",
-                link: "#"
-            }
-        ];
+        let consultants = [];
+        let isLoading = false;
 
         const fab = document.getElementById('fab');
         const panel = document.getElementById('expert-panel');
         const listContainer = document.getElementById('consultant-list');
         const searchInput = document.getElementById('search-input');
 
+        // API-Funktionen
+        async function fetchConsultants() {
+            if (isLoading) return;
+
+            isLoading = true;
+            showLoading();
+
+            try {
+                console.log('Fetching consultants...');
+                const response = await fetch('https://bsc-experten.de/wp-json/wp/v2/berater');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Received data:', data);
+
+                consultants = data.map(consultant => {
+                    console.log('Processing consultant:', consultant.title.rendered);
+                    return {
+                        name: consultant.title.rendered,
+                        // Fallback auf einen Platzhalter wenn kein Bild verfügbar ist
+                        image: consultant.yoast_head_json?.og_image?.[0]?.url ||
+                            'https://via.placeholder.com/150x150/1d4b73/ffffff?text=' + encodeURIComponent(consultant.title.rendered.charAt(0)),
+                        link: consultant.link,
+                        // Zusätzliche Informationen falls verfügbar
+                        id: consultant.id,
+                        slug: consultant.slug
+                    };
+                });
+
+                console.log('Processed consultants:', consultants);
+                renderList();
+            } catch (error) {
+                console.error('Fehler beim Laden der Berater:', error);
+                showError('Fehler beim Laden der Berater. Bitte versuchen Sie es später erneut.');
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        function showLoading() {
+            listContainer.innerHTML = '<div class="loading">Lade Berater...</div>';
+        }
+
+        function showError(message) {
+            listContainer.innerHTML = `<div class="error">${message}</div>`;
+        }
+
         function renderList(filter = "") {
+            if (isLoading) return;
+
+            console.log('Rendering list with filter:', filter);
+            console.log('Available consultants:', consultants);
+
             listContainer.innerHTML = "";
-            const filteredConsultants = consultants
-                .filter(c =>
-                    c.name.toLowerCase().includes(filter.toLowerCase()) ||
-                    c.address.toLowerCase().includes(filter.toLowerCase())
-                );
+
+            const filteredConsultants = consultants.filter(c =>
+                c.name.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            console.log('Filtered consultants:', filteredConsultants);
 
             filteredConsultants.forEach(c => {
+                console.log('Creating element for:', c.name);
+
                 const item = document.createElement('div');
                 item.className = 'consultant';
-                item.onclick = () => window.location.href = c.link;
-                item.innerHTML = `
-            <img src="${c.image}" alt="${c.name}">
-            <div class="consultant-info">
-              <div class="consultant-name">${c.name}</div>
-              <div class="consultant-address">${c.address}</div>
-            </div>
-          `;
+                item.onclick = () => window.open(c.link, '_blank');
+
+                // Fallback-Bild wenn das Laden fehlschlägt
+                const imgElement = document.createElement('img');
+                imgElement.src = c.image;
+                imgElement.alt = c.name;
+                imgElement.onerror = function () {
+                    this.src = `https://via.placeholder.com/50x50/1d4b73/ffffff?text=${encodeURIComponent(c.name.charAt(0))}`;
+                };
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'consultant-info';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'consultant-name';
+                nameDiv.textContent = c.name;
+
+                const addressDiv = document.createElement('div');
+                addressDiv.className = 'consultant-address';
+                addressDiv.textContent = 'BSC | Die Finanzberater';
+
+                infoDiv.appendChild(nameDiv);
+                infoDiv.appendChild(addressDiv);
+
+                item.appendChild(imgElement);
+                item.appendChild(infoDiv);
                 listContainer.appendChild(item);
             });
 
             // Zeige eine Nachricht wenn keine Ergebnisse gefunden wurden
-            if (filteredConsultants.length === 0 && filter) {
+            if (filteredConsultants.length === 0 && filter && consultants.length > 0) {
                 const noResults = document.createElement('div');
                 noResults.style.textAlign = 'center';
                 noResults.style.padding = '20px';
@@ -200,15 +256,44 @@
                 noResults.textContent = 'Keine Berater gefunden.';
                 listContainer.appendChild(noResults);
             }
+
+            console.log('Render complete. List container children:', listContainer.children.length);
         }
 
+        // Event Listeners
         fab.addEventListener('click', () => {
             panel.classList.toggle('open');
-            renderList();
+
+            // Wenn Panel geöffnet wird und keine Daten da sind, zeige die geladenen Daten
+            if (panel.classList.contains('open') && consultants.length > 0) {
+                renderList();
+            }
         });
 
         searchInput.addEventListener('input', (e) => {
             renderList(e.target.value);
         });
+
+        // Suchbutton Event Listener
+        const searchButton = document.querySelector('#expert-search button');
+        if (searchButton) {
+            searchButton.addEventListener('click', () => {
+                renderList(searchInput.value);
+            });
+        }
+
+        // Lade Daten beim Seitenstart
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, fetching consultants...');
+            fetchConsultants();
+        });
+
+        // Fallback falls DOMContentLoaded bereits gefeuert wurde
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fetchConsultants);
+        } else {
+            console.log('Page already loaded, fetching consultants immediately...');
+            fetchConsultants();
+        }
     })();
 </script>
