@@ -1,51 +1,21 @@
 <style>
-    /* Floating Button */
-    #fab {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #1d4b73;
-        color: white;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        font-weight: bold;
-        z-index: 2147483647;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        transition: background-color 0.3s;
-    }
-
-    #fab:hover {
-        background-color: #173a59;
-    }
-
-    /* Slide-out Panel */
+    /* Expert Panel */
     #expert-panel {
         position: fixed;
         top: 0;
-        right: -100%;
+        right: 0;
         width: 33%;
         height: 100vh;
         background-color: #204060;
         color: white;
         box-shadow: -2px 0 6px rgba(0, 0, 0, 0.3);
-        transition: right 0.3s ease;
         z-index: 2147483646;
         padding: 20px;
         display: flex;
         flex-direction: column;
-        visibility: hidden;
+        visibility: visible;
         overflow-y: auto;
         box-sizing: border-box;
-    }
-
-    #expert-panel.open {
-        right: 0;
-        visibility: visible;
     }
 
     /* Header */
@@ -117,13 +87,13 @@
 
     .consultant-city {
         font-size: 0.85rem;
-        color: #4CAF50;
+        color: white;
         margin-top: 2px;
     }
 
     .consultant-distance {
         font-size: 0.8rem;
-        color: #4CAF50;
+        color: white;
         margin-top: 2px;
     }
 
@@ -290,7 +260,7 @@
     .child-chip {
         display: inline-block;
         background: rgba(76, 175, 80, 0.2);
-        color: #4CAF50;
+        color: #45a049;
         padding: 4px 10px;
         border-radius: 15px;
         margin: 2px;
@@ -441,26 +411,13 @@
     @media (max-width: 768px) {
         #expert-panel {
             width: 90%;
-        }
-
-        #expert-panel.open {
             right: 5%;
-        }
-
-        #fab {
-            bottom: 15px;
-            right: 15px;
-            width: 50px;
-            height: 50px;
         }
     }
 
     @media (max-width: 480px) {
         #expert-panel {
             width: 95%;
-        }
-
-        #expert-panel.open {
             right: 2.5%;
         }
     }
@@ -478,7 +435,6 @@
     }
 </style>
 
-<div id="fab">🔍</div>
 
 <div id="expert-panel">
     <h2>Finde einen Experten in deiner Nähe!</h2>
@@ -530,7 +486,6 @@
         let activeMainExpertise = null;
         let activeChildExpertises = new Set();
 
-        const fab = document.getElementById('fab');
         const panel = document.getElementById('expert-panel');
         const listContainer = document.getElementById('consultant-list');
         const unifiedSearchInput = document.getElementById('unified-search-input');
@@ -1082,15 +1037,6 @@
         }
 
         // Event Listeners
-        fab.addEventListener('click', () => {
-            panel.classList.toggle('open');
-
-            // Wenn Panel geöffnet wird und keine Daten da sind, zeige die geladenen Daten
-            if (panel.classList.contains('open') && consultants.length > 0) {
-                renderList();
-            }
-        });
-
         // Unified search input events
         unifiedSearchInput.addEventListener('input', (e) => {
             currentSearchQuery = e.target.value;
@@ -1132,10 +1078,13 @@
         // Lade Daten beim Seitenstart
         async function initializeData() {
             console.log('Initializing data...');
+            // Lade Daten sofort beim Start
             await Promise.all([
                 fetchConsultants(),
                 fetchExpertise()
             ]);
+            // Rendere die Liste sofort nach dem Laden der Daten
+            renderList();
         }
 
         // Fallback falls DOMContentLoaded bereits gefeuert wurde
@@ -1143,7 +1092,8 @@
             document.addEventListener('DOMContentLoaded', initializeData);
         } else {
             console.log('Page already loaded, initializing data immediately...');
-            initializeData();
+            // Warte einen kurzen Moment für DOM-Bereitschaft
+            setTimeout(initializeData, 100);
         }
     })();
 </script>
