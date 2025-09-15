@@ -324,76 +324,117 @@
         margin-bottom: 8px;
     }
 
-    #location-search-mini {
+    /* Unified Search */
+    #unified-search {
+        position: relative;
+        display: flex;
         margin-bottom: 10px;
     }
 
-    #location-search-mini input {
-        width: 100%;
-        padding: 6px 8px;
-        border: none;
-        border-radius: 4px;
-        font-size: 0.85rem;
-    }
-
-    #expert-search-mini {
-        display: flex;
-    }
-
-    #expert-search-mini input {
+    #unified-search input {
         flex: 1;
-        padding: 6px 8px;
+        padding: 8px 12px;
         border: none;
         border-radius: 4px 0 0 4px;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
-    #expert-search-mini button {
+    #unified-search button {
         background: white;
         border: none;
         border-radius: 0 4px 4px 0;
-        padding: 6px 10px;
+        padding: 8px 12px;
         cursor: pointer;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
-    /* City Results List for mini search */
-    #city-results-mini {
+    /* Search Results Dropdown */
+    #search-results-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
         background: white;
         color: #333;
         border-radius: 4px;
-        margin-top: 5px;
-        max-height: 120px;
+        margin-top: 2px;
+        max-height: 200px;
         overflow-y: auto;
         display: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        font-size: 0.8rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        border: 1px solid #ddd;
     }
 
-    #city-results-mini .city-result-item {
-        padding: 8px;
+    .search-result-item {
+        padding: 10px 12px;
         cursor: pointer;
         border-bottom: 1px solid #eee;
         transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    #city-results-mini .city-result-item:hover {
-        background-color: #f5f5f5;
+    .search-result-item:hover {
+        background-color: #f8f9fa;
     }
 
-    #city-results-mini .city-result-item:last-child {
+    .search-result-item:last-child {
         border-bottom: none;
     }
 
-    #city-results-mini .city-result-name {
-        font-weight: bold;
+    .search-result-type {
         font-size: 0.8rem;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-weight: bold;
+        white-space: nowrap;
     }
 
-    #city-results-mini .city-result-details {
-        font-size: 0.7rem;
+    .search-result-type.location {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4CAF50;
+    }
+
+    .search-result-type.consultant {
+        background: rgba(29, 75, 115, 0.2);
+        color: #1d4b73;
+    }
+
+    .search-result-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .search-result-name {
+        font-weight: bold;
+        font-size: 0.9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .search-result-details {
+        font-size: 0.8rem;
         color: #666;
         margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Current Location Display */
+    #current-location {
+        margin-bottom: 10px;
+        padding: 6px 8px;
+        background: rgba(76, 175, 80, 0.1);
+        border-radius: 4px;
+        border-left: 3px solid #4CAF50;
+    }
+
+    #clear-location:hover {
+        color: #ff4444 !important;
     }
 
     /* Responsive Design */
@@ -449,18 +490,20 @@
     <div id="expertise-chips">
         <!-- Search Section moved here -->
         <div id="search-section">
-            <div class="search-hint">🔍 Suche und Filter:</div>
+            <div class="search-hint">🔍 Suche nach Beratern oder Standorten:</div>
 
-            <!-- Compact Location Search -->
-            <div id="location-search-mini">
-                <input type="text" id="location-input-mini" placeholder="📍 Standort (für Entfernung)">
-                <div id="city-results-mini"></div>
+            <!-- Unified Search -->
+            <div id="unified-search">
+                <input type="text" id="unified-search-input" placeholder="� Berater, Stadt oder Standort eingeben...">
+                <button type="button" id="search-button">🔍</button>
+                <div id="search-results-dropdown"></div>
             </div>
 
-            <!-- Compact Name Search -->
-            <div id="expert-search-mini">
-                <input type="text" id="search-input-mini" placeholder="👤 Name oder Stadt">
-                <button type="button">🔍</button>
+            <!-- Current Location Display -->
+            <div id="current-location" style="display: none;">
+                <small style="color: #4CAF50;">📍 Standort für Entfernung: <span id="location-display"></span>
+                    <button type="button" id="clear-location"
+                        style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 0.8rem;">✕</button></small>
             </div>
         </div>
 
@@ -490,13 +533,19 @@
         const fab = document.getElementById('fab');
         const panel = document.getElementById('expert-panel');
         const listContainer = document.getElementById('consultant-list');
-        const searchInput = document.getElementById('search-input-mini');
-        const locationInput = document.getElementById('location-input-mini');
-        const cityResults = document.getElementById('city-results-mini');
+        const unifiedSearchInput = document.getElementById('unified-search-input');
+        const searchButton = document.getElementById('search-button');
+        const searchResultsDropdown = document.getElementById('search-results-dropdown');
+        const currentLocationDiv = document.getElementById('current-location');
+        const locationDisplay = document.getElementById('location-display');
+        const clearLocationButton = document.getElementById('clear-location');
         const chipsContainer = document.getElementById('chips-container');
         const childChipsContainer = document.getElementById('child-chips-container');
         const childExpertiseContainer = document.getElementById('child-expertise-container');
         const filterCountElement = document.getElementById('filter-count');
+
+        let currentSearchQuery = '';
+        let searchTimeout;
 
         // Utility Functions
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -573,41 +622,109 @@
             }
         }
 
-        function renderCityResults(locations) {
-            cityResults.innerHTML = '';
-
-            if (locations.length === 0) {
-                cityResults.style.display = 'none';
+        async function performUnifiedSearch(query) {
+            if (!query || query.length < 2) {
+                searchResultsDropdown.style.display = 'none';
                 return;
             }
 
-            locations.forEach(location => {
-                const item = document.createElement('div');
-                item.className = 'city-result-item';
+            const results = [];
 
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'city-result-name';
-                // Extrahiere den Hauptort aus dem display_name
-                const parts = location.display_name.split(',');
-                const cityName = parts[0] + (parts[1] ? ', ' + parts[1].trim() : '');
-                nameDiv.textContent = cityName;
+            // Suche nach Beratern (Name, Stadt, Adresse)
+            const consultantMatches = consultants.filter(consultant => {
+                return consultant.name.toLowerCase().includes(query.toLowerCase()) ||
+                    consultant.city.toLowerCase().includes(query.toLowerCase()) ||
+                    consultant.address.toLowerCase().includes(query.toLowerCase());
+            }).slice(0, 3); // Limitiere auf 3 Berater
 
-                const detailsDiv = document.createElement('div');
-                detailsDiv.className = 'city-result-details';
-                detailsDiv.textContent = location.display_name;
-
-                item.appendChild(nameDiv);
-                item.appendChild(detailsDiv);
-
-                item.onclick = () => selectCity(location);
-
-                cityResults.appendChild(item);
+            consultantMatches.forEach(consultant => {
+                results.push({
+                    type: 'consultant',
+                    data: consultant,
+                    name: consultant.name,
+                    details: `${consultant.city}${consultant.address ? ', ' + consultant.address : ''}`
+                });
             });
 
-            cityResults.style.display = 'block';
+            // Suche nach Standorten (nur wenn mindestens 3 Zeichen)
+            if (query.length >= 3) {
+                try {
+                    const locations = await searchLocation(query);
+                    locations.slice(0, 3).forEach(location => { // Limitiere auf 3 Standorte
+                        const parts = location.display_name.split(',');
+                        const cityName = parts[0] + (parts[1] ? ', ' + parts[1].trim() : '');
+
+                        results.push({
+                            type: 'location',
+                            data: location,
+                            name: cityName,
+                            details: location.display_name
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error searching locations:', error);
+                }
+            }
+
+            renderSearchResults(results);
         }
 
-        function selectCity(location) {
+        function renderSearchResults(results) {
+            searchResultsDropdown.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsDropdown.style.display = 'none';
+                return;
+            }
+
+            results.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+
+                const typeTag = document.createElement('div');
+                typeTag.className = `search-result-type ${result.type}`;
+                typeTag.textContent = result.type === 'consultant' ? '👤' : '📍';
+
+                const content = document.createElement('div');
+                content.className = 'search-result-content';
+
+                const name = document.createElement('div');
+                name.className = 'search-result-name';
+                name.textContent = result.name;
+
+                const details = document.createElement('div');
+                details.className = 'search-result-details';
+                details.textContent = result.details;
+
+                content.appendChild(name);
+                content.appendChild(details);
+                item.appendChild(typeTag);
+                item.appendChild(content);
+
+                item.onclick = () => selectSearchResult(result);
+
+                searchResultsDropdown.appendChild(item);
+            });
+
+            searchResultsDropdown.style.display = 'block';
+        }
+
+        function selectSearchResult(result) {
+            if (result.type === 'consultant') {
+                // Berater ausgewählt - Suche nach diesem Berater
+                currentSearchQuery = result.name;
+                unifiedSearchInput.value = result.name;
+                searchResultsDropdown.style.display = 'none';
+                renderList(result.name);
+            } else if (result.type === 'location') {
+                // Standort ausgewählt - als Referenz für Entfernungsberechnung setzen
+                selectLocation(result.data);
+                unifiedSearchInput.value = '';
+                searchResultsDropdown.style.display = 'none';
+            }
+        }
+
+        function selectLocation(location) {
             userLocation = {
                 lat: parseFloat(location.lat),
                 lng: parseFloat(location.lon),
@@ -616,16 +733,26 @@
 
             console.log('Selected location:', userLocation);
 
-            // Update input field with selected city
+            // Update location display
             const parts = location.display_name.split(',');
             const cityName = parts[0] + (parts[1] ? ', ' + parts[1].trim() : '');
-            locationInput.value = cityName;
-
-            // Hide results
-            cityResults.style.display = 'none';
+            locationDisplay.textContent = cityName;
+            currentLocationDiv.style.display = 'block';
 
             // Update distances
             updateDistances();
+        }
+
+        function clearLocation() {
+            userLocation = null;
+            currentLocationDiv.style.display = 'none';
+
+            // Remove distances from consultants
+            consultants.forEach(consultant => {
+                consultant.distance = null;
+            });
+
+            renderList(currentSearchQuery);
         }
 
         // API Functions
@@ -809,7 +936,7 @@
             renderExpertiseChips();
             renderChildExpertiseChips();
             updateFilterCount();
-            renderList(searchInput.value);
+            renderList(currentSearchQuery);
         }
 
         function toggleChildExpertise(expertiseId) {
@@ -822,7 +949,7 @@
             // Update UI
             renderChildExpertiseChips();
             updateFilterCount();
-            renderList(searchInput.value);
+            renderList(currentSearchQuery);
         }
 
         function updateFilterCount() {
@@ -964,37 +1091,43 @@
             }
         });
 
-        searchInput.addEventListener('input', (e) => {
-            renderList(e.target.value);
+        // Unified search input events
+        unifiedSearchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+
+            // Debounce search
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performUnifiedSearch(currentSearchQuery);
+            }, 300);
+
+            // Immediate name filter for consultants
+            renderList(currentSearchQuery);
         });
 
-        // Location search events
-        locationInput.addEventListener('input', async (e) => {
-            const query = e.target.value.trim();
-
-            if (query.length < 3) {
-                cityResults.style.display = 'none';
-                return;
+        unifiedSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchResultsDropdown.style.display = 'none';
+                renderList(currentSearchQuery);
             }
-
-            const locations = await searchLocation(query);
-            renderCityResults(locations);
         });
 
-        // Verstecke Ergebnisse wenn außerhalb geklickt wird
+        // Search button click
+        searchButton.addEventListener('click', () => {
+            searchResultsDropdown.style.display = 'none';
+            renderList(currentSearchQuery);
+        });
+
+        // Clear location button
+        clearLocationButton.addEventListener('click', clearLocation);
+
+        // Hide search results when clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#location-search-mini')) {
-                cityResults.style.display = 'none';
+            if (!e.target.closest('#unified-search')) {
+                searchResultsDropdown.style.display = 'none';
             }
         });
-
-        // Suchbutton Event Listener
-        const searchButton = document.querySelector('#expert-search-mini button');
-        if (searchButton) {
-            searchButton.addEventListener('click', () => {
-                renderList(searchInput.value);
-            });
-        }
 
         // Lade Daten beim Seitenstart
         async function initializeData() {
