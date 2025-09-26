@@ -16,6 +16,7 @@
         visibility: visible;
         overflow-y: auto;
         box-sizing: border-box;
+        font-family: Arial, sans-serif;
     }
 
     /* Header */
@@ -25,33 +26,23 @@
         flex-shrink: 0;
     }
 
-    /* Search Input */
-    #expert-search {
-        display: flex;
-        margin-bottom: 15px;
-        flex-shrink: 0;
-    }
-
-    #expert-search input {
+    /* Consultant List Container */
+    #consultant-list {
         flex: 1;
-        padding: 8px;
-        border: none;
-        border-radius: 4px 0 0 4px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        padding-right: 5px;
+        min-height: 200px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px;
     }
 
-    #expert-search button {
-        background: white;
-        border: none;
-        border-radius: 0 4px 4px 0;
-        padding: 8px 12px;
-        cursor: pointer;
-    }
-
-    /* Consultant List */
+    /* Consultant Card */
     .consultant {
         background: #173a59;
         border-radius: 8px;
-        padding: 10px;
+        padding: 15px;
         display: flex;
         align-items: center;
         margin-bottom: 10px;
@@ -64,25 +55,29 @@
     }
 
     .consultant img {
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
         border-radius: 8px;
-        margin-right: 10px;
+        margin-right: 15px;
         object-fit: cover;
+        flex-shrink: 0;
     }
 
     .consultant-info {
         display: flex;
         flex-direction: column;
+        flex: 1;
     }
 
     .consultant-name {
         font-weight: bold;
+        font-size: 1.1rem;
     }
 
-    .consultant-address {
+    .consultant-subtitle {
         font-size: 0.9rem;
         opacity: 0.8;
+        margin-top: 4px;
     }
 
     .consultant-city {
@@ -92,213 +87,36 @@
     }
 
     .consultant-distance {
-        font-size: 0.8rem;
-        color: white;
-        margin-top: 2px;
-    }
-
-    .consultant-expertise {
-        font-size: 0.75rem;
-        opacity: 0.7;
-        margin-top: 4px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-
-    .expertise-tag {
-        background: rgba(76, 175, 80, 0.2);
+        font-size: 0.85rem;
         color: #4CAF50;
-        padding: 2px 6px;
-        border-radius: 10px;
-        font-size: 0.7rem;
-    }
-
-    /* Loading State */
-    .loading {
-        text-align: center;
-        padding: 20px;
-        opacity: 0.7;
-    }
-
-    .error {
-        text-align: center;
-        padding: 20px;
-        color: #ff6b6b;
-        background-color: rgba(255, 107, 107, 0.1);
-        border-radius: 4px;
-        margin: 10px 0;
-    }
-
-    /* Location Search */
-    #location-search {
-        margin-bottom: 15px;
-        flex-shrink: 0;
-    }
-
-    #location-input {
-        width: 100%;
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        margin-bottom: 5px;
-    }
-
-    #city-select {
-        width: 100%;
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        display: none;
-        margin-bottom: 10px;
-        background: white;
-        color: #333;
-    }
-
-    /* City Results List */
-    #city-results {
-        background: white;
-        color: #333;
-        border-radius: 4px;
-        margin-bottom: 10px;
-        max-height: 200px;
-        overflow-y: auto;
-        display: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .city-result-item {
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #eee;
-        transition: background-color 0.2s;
-    }
-
-    .city-result-item:hover {
-        background-color: #f5f5f5;
-    }
-
-    .city-result-item:last-child {
-        border-bottom: none;
-    }
-
-    .city-result-name {
+        margin-top: 4px;
         font-weight: bold;
-        font-size: 0.9rem;
     }
 
-    .city-result-details {
-        font-size: 0.8rem;
-        color: #666;
-        margin-top: 2px;
-    }
-
-    /* Expertise Chips */
-    #expertise-chips {
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        margin-top: auto;
-        padding: 15px;
+    /* Sticky Footer Menu */
+    #footer-menu {
+        padding-top: 15px;
         flex-shrink: 0;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 8px 8px 0 0;
+        background: #204060;
         position: sticky;
         bottom: 0;
-        backdrop-filter: blur(10px);
-        border-bottom: none;
+        backdrop-filter: blur(5px);
     }
 
-    #chips-container {
-        max-height: 80px;
-        overflow-y: auto;
-        padding-right: 5px;
-        margin-bottom: 10px;
-    }
-
-    .chip {
-        display: inline-block;
-        background: #173a59;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        margin: 2px;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: background 0.2s;
-        border: 1px solid transparent;
-        user-select: none;
-    }
-
-    .chip:hover {
-        background: #102840;
-    }
-
-    .chip.active {
-        background: #4CAF50;
-        border-color: #45a049;
-    }
-
-    .chip.disabled {
-        background: #666;
-        cursor: not-allowed;
-        opacity: 0.5;
-    }
-
-    /* Child Expertise Chips */
-    #child-expertise-container {
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        display: none;
-    }
-
-    #child-chips-container {
-        max-height: 60px;
-        overflow-y: auto;
-        padding-right: 5px;
-    }
-
-    .child-chip {
-        display: inline-block;
-        background: rgba(76, 175, 80, 0.2);
-        color: #45a049;
-        padding: 4px 10px;
-        border-radius: 15px;
-        margin: 2px;
-        font-size: 0.75rem;
-        cursor: pointer;
-        transition: background 0.2s;
-        border: 1px solid rgba(76, 175, 80, 0.3);
-        user-select: none;
-    }
-
-    .child-chip:hover {
-        background: rgba(76, 175, 80, 0.3);
-    }
-
-    .child-chip.active {
-        background: #4CAF50;
-        color: white;
-        border-color: #45a049;
-    }
-
-    /* Search Input in Expertise Container */
-    #search-section {
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    #search-section .search-hint {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin-bottom: 8px;
+    #footer-menu h4 {
+        margin: 0 0 10px;
+        font-size: 1rem;
+        opacity: 0.9;
     }
 
     /* Unified Search */
+    #unified-search-section {
+        margin-bottom: 15px;
+    }
+
     #unified-search {
         position: relative;
         display: flex;
-        margin-bottom: 10px;
     }
 
     #unified-search input {
@@ -368,8 +186,8 @@
     }
 
     .search-result-type.consultant {
-        background: rgba(29, 75, 115, 0.2);
-        color: #1d4b73;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
     }
 
     .search-result-content {
@@ -401,10 +219,77 @@
         background: rgba(76, 175, 80, 0.1);
         border-radius: 4px;
         border-left: 3px solid #4CAF50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+    }
+
+    #current-location small {
+        color: #4CAF50;
+        font-size: 0.8rem;
+    }
+
+    #clear-location {
+        background: none;
+        border: none;
+        color: #ff6b6b;
+        cursor: pointer;
+        font-size: 0.8rem;
     }
 
     #clear-location:hover {
         color: #ff4444 !important;
+    }
+
+    /* Expertise Dropdown */
+    #expertise-filter-container {
+        margin-bottom: 15px;
+    }
+
+    #main-expertise-select,
+    #child-expertise-select {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        background: white;
+        color: #333;
+        font-size: 0.9rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+    }
+
+    #child-expertise-select {
+        display: none;
+    }
+
+    /* Loading and Error States */
+    .loading {
+        text-align: center;
+        padding: 20px;
+        opacity: 0.7;
+    }
+
+    .error {
+        text-align: center;
+        padding: 20px;
+        color: #ff6b6b;
+        background-color: rgba(255, 107, 107, 0.1);
+        border-radius: 4px;
+        margin: 10px 0;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 20px;
+        color: rgba(255, 255, 255, 0.5);
     }
 
     /* Responsive Design */
@@ -421,58 +306,35 @@
             right: 2.5%;
         }
     }
-
-    /* Consultant List Container */
-    #consultant-list {
-        flex: 0 1 auto;
-        overflow-y: auto;
-        margin-bottom: 15px;
-        min-height: 200px;
-        max-height: 50vh;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 10px;
-    }
 </style>
 
 
 <div id="expert-panel">
     <h2>Finde einen Experten in deiner Nähe!</h2>
 
-    <!-- Consultant List -->
     <div id="consultant-list"></div>
 
-    <!-- Expertise Chips moved to bottom with search -->
-    <div id="expertise-chips">
-        <!-- Search Section moved here -->
-        <div id="search-section">
-            <div class="search-hint">🔍 Suche nach Beratern oder Standorten:</div>
-
-            <!-- Unified Search -->
+    <div id="footer-menu">
+        <div id="unified-search-section">
             <div id="unified-search">
-                <input type="text" id="unified-search-input" placeholder="� Berater, Stadt oder Standort eingeben...">
+                <input type="text" id="unified-search-input" placeholder="Berater oder Ort suchen...">
                 <button type="button" id="search-button">🔍</button>
                 <div id="search-results-dropdown"></div>
             </div>
-
-            <!-- Current Location Display -->
             <div id="current-location" style="display: none;">
-                <small style="color: #4CAF50;">📍 Standort für Entfernung: <span id="location-display"></span>
-                    <button type="button" id="clear-location"
-                        style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 0.8rem;">✕</button></small>
+                <small>📍 Standort für Entfernung: <span id="location-display"></span></small>
+                <button type="button" id="clear-location">✕</button>
             </div>
         </div>
 
-        <!-- Expertise Filters -->
-        <div style="font-size: 0.9rem; margin-bottom: 8px; opacity: 0.8;">
-            🏷️ Nach Hauptexpertise filtern: <span id="filter-count"></span>
-        </div>
-        <div id="chips-container"></div>
-        <div id="child-expertise-container">
-            <div style="font-size: 0.85rem; margin-bottom: 6px; opacity: 0.7;">
-                🎯 Spezifische Expertise:
-            </div>
-            <div id="child-chips-container"></div>
+        <div id="expertise-filter-container">
+            <h4>Nach Expertise filtern:</h4>
+            <select id="main-expertise-select">
+                <option value="">Alle Expertisen</option>
+            </select>
+            <select id="child-expertise-select">
+                <option value="">Alle spezifischen Expertisen</option>
+            </select>
         </div>
     </div>
 </div>
@@ -483,10 +345,9 @@
         let expertiseData = [];
         let isLoading = false;
         let userLocation = null;
-        let activeMainExpertise = null;
-        let activeChildExpertises = new Set();
+        let currentSearchQuery = '';
+        let searchTimeout;
 
-        const panel = document.getElementById('expert-panel');
         const listContainer = document.getElementById('consultant-list');
         const unifiedSearchInput = document.getElementById('unified-search-input');
         const searchButton = document.getElementById('search-button');
@@ -494,17 +355,12 @@
         const currentLocationDiv = document.getElementById('current-location');
         const locationDisplay = document.getElementById('location-display');
         const clearLocationButton = document.getElementById('clear-location');
-        const chipsContainer = document.getElementById('chips-container');
-        const childChipsContainer = document.getElementById('child-chips-container');
-        const childExpertiseContainer = document.getElementById('child-expertise-container');
-        const filterCountElement = document.getElementById('filter-count');
-
-        let currentSearchQuery = '';
-        let searchTimeout;
+        const mainExpertiseSelect = document.getElementById('main-expertise-select');
+        const childExpertiseSelect = document.getElementById('child-expertise-select');
 
         // Utility Functions
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius der Erde in km
+            const R = 6371; // Earth's radius in km
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -521,65 +377,17 @@
                 .map(exp => exp.name);
         }
 
-        function getChildExpertiseIds(parentId) {
-            const children = expertiseData
-                .filter(exp => exp.parent === parentId)
-                .map(exp => exp.id);
-            console.log(`Child expertise IDs for parent ${parentId}:`, children);
-            return children;
-        }
-
-        function getAllChildExpertiseIds(parentIds) {
-            let allChildIds = [];
-            parentIds.forEach(parentId => {
-                allChildIds = allChildIds.concat(getChildExpertiseIds(parentId));
-            });
-            return allChildIds;
-        }
-
-        function consultantMatchesExpertise(consultant) {
-            // If no expertise filters are active, show all consultants
-            if (!activeMainExpertise && activeChildExpertises.size === 0) {
-                return true;
-            }
-
-            // Ensure consultant.expertise is an array of numbers
-            const consultantExpertiseIds = (consultant.expertise || []).map(id => parseInt(id));
-            console.log(`Checking expertise for ${consultant.name}: has ${consultantExpertiseIds}, looking for main=${activeMainExpertise}, children=${Array.from(activeChildExpertises)}`);
-
-            // If child expertises are selected, check those specifically
-            if (activeChildExpertises.size > 0) {
-                const hasChildExpertise = consultantExpertiseIds.some(id => activeChildExpertises.has(parseInt(id)));
-                console.log(`Child expertise match for ${consultant.name}: ${hasChildExpertise}`);
-                return hasChildExpertise;
-            }
-
-            // If only main expertise selected, check main expertise and all its children
-            if (activeMainExpertise) {
-                const childIds = getChildExpertiseIds(parseInt(activeMainExpertise));
-                const allRelevantIds = [parseInt(activeMainExpertise), ...childIds];
-                const hasMainExpertise = consultantExpertiseIds.some(id => allRelevantIds.includes(parseInt(id)));
-                console.log(`Main expertise match for ${consultant.name}: ${hasMainExpertise} (checking IDs: ${allRelevantIds})`);
-                return hasMainExpertise;
-            }
-
-            return true;
-        }
-
+        // Search & Location Functions
         async function searchLocation(query) {
             try {
                 const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=de&limit=10`);
                 const data = await response.json();
-
-                // Filter nur Städte, Orte und Gemeinden
                 const cityTypes = ['city', 'town', 'village', 'municipality', 'administrative'];
                 return data.filter(location => {
                     return cityTypes.includes(location.type) ||
                         cityTypes.includes(location.class) ||
-                        location.display_name.includes('Stadt') ||
-                        location.display_name.includes('Gemeinde') ||
                         (location.addresstype && ['city', 'town', 'village', 'municipality'].includes(location.addresstype));
-                }).slice(0, 5); // Limitiere auf 5 Städte
+                }).slice(0, 5);
             } catch (error) {
                 console.error('Error searching location:', error);
                 return [];
@@ -593,31 +401,27 @@
             }
 
             const results = [];
+            const consultantMatches = consultants.filter(c => {
+                return c.name.toLowerCase().includes(query.toLowerCase()) ||
+                    c.city.toLowerCase().includes(query.toLowerCase()) ||
+                    c.address.toLowerCase().includes(query.toLowerCase());
+            }).slice(0, 3);
 
-            // Suche nach Beratern (Name, Stadt, Adresse)
-            const consultantMatches = consultants.filter(consultant => {
-                return consultant.name.toLowerCase().includes(query.toLowerCase()) ||
-                    consultant.city.toLowerCase().includes(query.toLowerCase()) ||
-                    consultant.address.toLowerCase().includes(query.toLowerCase());
-            }).slice(0, 3); // Limitiere auf 3 Berater
-
-            consultantMatches.forEach(consultant => {
+            consultantMatches.forEach(c => {
                 results.push({
                     type: 'consultant',
-                    data: consultant,
-                    name: consultant.name,
-                    details: `${consultant.city}${consultant.address ? ', ' + consultant.address : ''}`
+                    data: c,
+                    name: c.name,
+                    details: `${c.city}${c.address ? ', ' + c.address : ''}`
                 });
             });
 
-            // Suche nach Standorten (nur wenn mindestens 3 Zeichen)
             if (query.length >= 3) {
                 try {
                     const locations = await searchLocation(query);
-                    locations.slice(0, 3).forEach(location => { // Limitiere auf 3 Standorte
+                    locations.slice(0, 3).forEach(location => {
                         const parts = location.display_name.split(',');
                         const cityName = parts[0] + (parts[1] ? ', ' + parts[1].trim() : '');
-
                         results.push({
                             type: 'location',
                             data: location,
@@ -635,7 +439,6 @@
 
         function renderSearchResults(results) {
             searchResultsDropdown.innerHTML = '';
-
             if (results.length === 0) {
                 searchResultsDropdown.style.display = 'none';
                 return;
@@ -644,18 +447,14 @@
             results.forEach(result => {
                 const item = document.createElement('div');
                 item.className = 'search-result-item';
-
                 const typeTag = document.createElement('div');
                 typeTag.className = `search-result-type ${result.type}`;
                 typeTag.textContent = result.type === 'consultant' ? '👤' : '📍';
-
                 const content = document.createElement('div');
                 content.className = 'search-result-content';
-
                 const name = document.createElement('div');
                 name.className = 'search-result-name';
                 name.textContent = result.name;
-
                 const details = document.createElement('div');
                 details.className = 'search-result-details';
                 details.textContent = result.details;
@@ -664,24 +463,19 @@
                 content.appendChild(details);
                 item.appendChild(typeTag);
                 item.appendChild(content);
-
                 item.onclick = () => selectSearchResult(result);
-
                 searchResultsDropdown.appendChild(item);
             });
-
             searchResultsDropdown.style.display = 'block';
         }
 
         function selectSearchResult(result) {
             if (result.type === 'consultant') {
-                // Berater ausgewählt - Suche nach diesem Berater
                 currentSearchQuery = result.name;
                 unifiedSearchInput.value = result.name;
                 searchResultsDropdown.style.display = 'none';
                 renderList(result.name);
             } else if (result.type === 'location') {
-                // Standort ausgewählt - als Referenz für Entfernungsberechnung setzen
                 selectLocation(result.data);
                 unifiedSearchInput.value = '';
                 searchResultsDropdown.style.display = 'none';
@@ -694,90 +488,43 @@
                 lng: parseFloat(location.lon),
                 display_name: location.display_name
             };
-
-            console.log('Selected location:', userLocation);
-
-            // Update location display
             const parts = location.display_name.split(',');
             const cityName = parts[0] + (parts[1] ? ', ' + parts[1].trim() : '');
             locationDisplay.textContent = cityName;
-            currentLocationDiv.style.display = 'block';
-
-            // Reset search query when location is selected
+            currentLocationDiv.style.display = 'flex';
             currentSearchQuery = '';
-
-            // Update distances and re-render
             updateDistances();
         }
 
         function clearLocation() {
             userLocation = null;
             currentLocationDiv.style.display = 'none';
-
-            // Remove distances from consultants
-            consultants.forEach(consultant => {
-                consultant.distance = null;
-            });
-
+            consultants.forEach(c => c.distance = null);
             renderList(currentSearchQuery);
         }
 
-        // API Functions
+        // Data & Rendering Functions
         async function fetchConsultants() {
             if (isLoading) return;
-
             isLoading = true;
             showLoading();
-
             try {
-                console.log('Fetching consultants...');
-                const response = await fetch('https://bsc-experten.de/wp-json/wp/v2/berater');
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
+                const response = await fetch('https://bsc-experten.de/wp-json/wp/v2/berater?per_page=100');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
-                console.log('Received data:', data);
-
-                consultants = data.map(consultant => {
-                    console.log('Processing consultant:', consultant.title.rendered);
-                    const acf = consultant.acf || {};
-                    const openStreetMap = acf.openstreetmap || {};
-
-                    // Ensure expertise is an array of numbers
-                    let expertiseIds = consultant.expertise || [];
-                    if (typeof expertiseIds === 'string') {
-                        expertiseIds = [parseInt(expertiseIds)];
-                    } else if (Array.isArray(expertiseIds)) {
-                        expertiseIds = expertiseIds.map(id => parseInt(id)).filter(id => !isNaN(id));
-                    } else {
-                        expertiseIds = [];
-                    }
-
-                    return {
-                        name: consultant.title.rendered,
-                        image: consultant.yoast_head_json?.og_image?.[0]?.url ||
-                            'https://via.placeholder.com/150x150/1d4b73/ffffff?text=' + encodeURIComponent(consultant.title.rendered.charAt(0)),
-                        link: consultant.link,
-                        id: consultant.id,
-                        slug: consultant.slug,
-                        // ACF Daten
-                        address: acf['berater-anschrift'] || '',
-                        city: acf['berater-ort'] || '',
-                        phone: acf['berater-kontakttelefon'] || '',
-                        email: acf['berater-email'] || '',
-                        subtitle: acf['experte_fuer'] || 'BSC | Die Finanzberater',
-                        // Koordinaten aus OpenStreetMap
-                        latitude: openStreetMap.lat || null,
-                        longitude: openStreetMap.lng || null,
-                        // Expertise IDs (normalized to numbers)
-                        expertise: expertiseIds,
-                        distance: null
-                    };
-                });
-
-                console.log('Processed consultants:', consultants);
+                consultants = data.map(c => ({
+                    name: c.title.rendered,
+                    image: c.yoast_head_json?.og_image?.[0]?.url || `https://via.placeholder.com/150x150/1d4b73/ffffff?text=${encodeURIComponent(c.title.rendered.charAt(0))}`,
+                    link: c.link,
+                    id: c.id,
+                    address: c.acf?.['berater-anschrift'] || '',
+                    city: c.acf?.['berater-ort'] || '',
+                    subtitle: c.acf?.['experte_fuer'] || 'BSC | Die Finanzberater',
+                    latitude: c.acf?.openstreetmap?.lat || null,
+                    longitude: c.acf?.openstreetmap?.lng || null,
+                    expertise: (c.expertise || []).map(id => parseInt(id)).filter(id => !isNaN(id)),
+                    distance: null
+                }));
                 renderList();
             } catch (error) {
                 console.error('Fehler beim Laden der Berater:', error);
@@ -789,25 +536,15 @@
 
         async function fetchExpertise() {
             try {
-                console.log('Fetching expertise...');
                 const response = await fetch('https://bsc-experten.de/wp-json/wp/v2/expertise?per_page=100');
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const rawData = await response.json();
-
-                // Normalize expertise data - ensure id and parent are numbers
                 expertiseData = rawData.map(exp => ({
                     ...exp,
                     id: parseInt(exp.id),
-                    parent: parseInt(exp.parent) || 0  // Default to 0 if parent is not set
+                    parent: parseInt(exp.parent) || 0
                 }));
-
-                console.log('Received and normalized expertise data:', expertiseData);
-                renderExpertiseChips();
-                renderChildExpertiseChips();
+                renderExpertiseDropdowns();
             } catch (error) {
                 console.error('Fehler beim Laden der Expertise:', error);
             }
@@ -815,32 +552,131 @@
 
         function updateDistances() {
             if (!userLocation) return;
-
-            console.log('Updating distances from location:', userLocation);
-
-            consultants.forEach(consultant => {
-                if (consultant.latitude && consultant.longitude) {
-                    consultant.distance = calculateDistance(
-                        userLocation.lat, userLocation.lng,
-                        consultant.latitude, consultant.longitude
-                    );
-                    console.log(`Distance to ${consultant.name}: ${consultant.distance?.toFixed(1)} km`);
+            consultants.forEach(c => {
+                if (c.latitude && c.longitude) {
+                    c.distance = calculateDistance(userLocation.lat, userLocation.lng, c.latitude, c.longitude);
                 } else {
-                    consultant.distance = null;
-                    console.log(`No coordinates for ${consultant.name}`);
+                    c.distance = null;
                 }
             });
-
-            // Sortiere nach Entfernung
+            // Sort in ascending order (closest first)
             consultants.sort((a, b) => {
                 if (a.distance === null && b.distance === null) return 0;
                 if (a.distance === null) return 1;
                 if (b.distance === null) return -1;
                 return a.distance - b.distance;
             });
-
-            console.log('Consultants sorted by distance');
             renderList(currentSearchQuery);
+        }
+
+        function renderExpertiseDropdowns() {
+            const mainExpertises = expertiseData.filter(exp => exp.parent === 0).sort((a, b) => a.name.localeCompare(b.name));
+            mainExpertiseSelect.innerHTML = '<option value="">Alle Expertisen</option>';
+            mainExpertises.forEach(exp => {
+                const option = document.createElement('option');
+                option.value = exp.id;
+                option.textContent = exp.name;
+                mainExpertiseSelect.appendChild(option);
+            });
+            updateChildExpertiseDropdown();
+        }
+
+        function updateChildExpertiseDropdown() {
+            const selectedMainId = mainExpertiseSelect.value;
+            childExpertiseSelect.innerHTML = '<option value="">Alle spezifischen Expertisen</option>';
+
+            if (!selectedMainId) {
+                childExpertiseSelect.style.display = 'none';
+                return;
+            }
+
+            const childExpertises = expertiseData.filter(exp => exp.parent === parseInt(selectedMainId)).sort((a, b) => a.name.localeCompare(b.name));
+            if (childExpertises.length > 0) {
+                childExpertiseSelect.style.display = 'block';
+                childExpertises.forEach(exp => {
+                    const option = document.createElement('option');
+                    option.value = exp.id;
+                    option.textContent = exp.name;
+                    childExpertiseSelect.appendChild(option);
+                });
+            } else {
+                childExpertiseSelect.style.display = 'none';
+            }
+        }
+
+        function renderList(nameFilter = "") {
+            if (isLoading) return;
+            listContainer.innerHTML = "";
+            const selectedMainId = mainExpertiseSelect.value;
+            const selectedChildId = childExpertiseSelect.value;
+
+            let filteredConsultants = consultants.filter(c => {
+                const matchesName = !nameFilter ||
+                    c.name.toLowerCase().includes(nameFilter.toLowerCase()) ||
+                    c.city.toLowerCase().includes(nameFilter.toLowerCase()) ||
+                    c.address.toLowerCase().includes(nameFilter.toLowerCase());
+
+                let matchesExpertise = (selectedMainId === "" && selectedChildId === "") ||
+                    (selectedChildId !== "" && c.expertise.includes(parseInt(selectedChildId)));
+
+                if (selectedMainId !== "" && selectedChildId === "") {
+                    // Check if consultant has main expertise or any of its children
+                    const relatedExpertiseIds = expertiseData
+                        .filter(exp => exp.id === parseInt(selectedMainId) || exp.parent === parseInt(selectedMainId))
+                        .map(exp => exp.id);
+                    matchesExpertise = c.expertise.some(id => relatedExpertiseIds.includes(id));
+                }
+
+                return matchesName && matchesExpertise;
+            });
+
+            if (filteredConsultants.length === 0) {
+                listContainer.innerHTML = '<div class="no-results">Keine Berater gefunden, die Ihren Kriterien entsprechen.</div>';
+                return;
+            }
+
+            filteredConsultants.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'consultant';
+                item.onclick = () => window.open(c.link, '_blank');
+
+                const imgElement = document.createElement('img');
+                imgElement.src = c.image;
+                imgElement.alt = c.name;
+                imgElement.onerror = function () {
+                    this.src = `https://via.placeholder.com/100x100/1d4b73/ffffff?text=${encodeURIComponent(c.name.charAt(0))}`;
+                };
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'consultant-info';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'consultant-name';
+                nameDiv.textContent = c.name;
+
+                const subtitleDiv = document.createElement('div');
+                subtitleDiv.className = 'consultant-subtitle';
+                subtitleDiv.textContent = c.subtitle;
+
+                const cityDiv = document.createElement('div');
+                cityDiv.className = 'consultant-city';
+                cityDiv.textContent = c.city;
+
+                infoDiv.appendChild(nameDiv);
+                infoDiv.appendChild(subtitleDiv);
+                infoDiv.appendChild(cityDiv);
+
+                if (c.distance !== null) {
+                    const distanceDiv = document.createElement('div');
+                    distanceDiv.className = 'consultant-distance';
+                    distanceDiv.textContent = `${Math.round(c.distance)} km entfernt`;
+                    infoDiv.appendChild(distanceDiv);
+                }
+
+                item.appendChild(imgElement);
+                item.appendChild(infoDiv);
+                listContainer.appendChild(item);
+            });
         }
 
         function showLoading() {
@@ -851,302 +687,51 @@
             listContainer.innerHTML = `<div class="error">${message}</div>`;
         }
 
-        function renderExpertiseChips() {
-            chipsContainer.innerHTML = '';
-
-            // Filter nur Hauptkategorien (parent = 0) und sortiere nach Namen
-            const mainExpertise = expertiseData
-                .filter(exp => parseInt(exp.parent) === 0)
-                .sort((a, b) => a.name.localeCompare(b.name));
-
-            console.log('Main expertise categories:', mainExpertise);
-
-            mainExpertise.forEach(expertise => {
-                const chip = document.createElement('div');
-                chip.className = 'chip';
-                chip.textContent = expertise.name;
-                chip.onclick = () => toggleMainExpertise(expertise.id);
-                chip.dataset.expertiseId = expertise.id;
-
-                if (activeMainExpertise === parseInt(expertise.id)) {
-                    chip.classList.add('active');
-                }
-
-                chipsContainer.appendChild(chip);
-            });
-
-            // Update filter count
-            updateFilterCount();
-        }
-
-        function renderChildExpertiseChips() {
-            childChipsContainer.innerHTML = '';
-
-            if (!activeMainExpertise) {
-                childExpertiseContainer.style.display = 'none';
-                return;
-            }
-
-            const childExpertises = expertiseData
-                .filter(exp => parseInt(exp.parent) === parseInt(activeMainExpertise))
-                .sort((a, b) => a.name.localeCompare(b.name));
-
-            console.log(`Child expertises for parent ${activeMainExpertise}:`, childExpertises);
-
-            if (childExpertises.length === 0) {
-                childExpertiseContainer.style.display = 'none';
-                return;
-            }
-
-            childExpertiseContainer.style.display = 'block';
-
-            childExpertises.forEach(expertise => {
-                const chip = document.createElement('div');
-                chip.className = 'child-chip';
-                chip.textContent = expertise.name;
-                chip.onclick = () => toggleChildExpertise(expertise.id);
-                chip.dataset.expertiseId = expertise.id;
-
-                if (activeChildExpertises.has(parseInt(expertise.id))) {
-                    chip.classList.add('active');
-                }
-
-                childChipsContainer.appendChild(chip);
-            });
-        }
-
-        function toggleMainExpertise(expertiseId) {
-            const id = parseInt(expertiseId);
-            console.log(`Toggling main expertise: ${id} (currently active: ${activeMainExpertise})`);
-
-            if (activeMainExpertise === id) {
-                // Deselect current main expertise
-                activeMainExpertise = null;
-                activeChildExpertises.clear();
-                console.log('Deselected main expertise');
-            } else {
-                // Select new main expertise
-                activeMainExpertise = id;
-                activeChildExpertises.clear();
-                console.log(`Selected main expertise: ${id}`);
-            }
-
-            // Update UI
-            renderExpertiseChips();
-            renderChildExpertiseChips();
-            updateFilterCount();
-            renderList(currentSearchQuery);
-        }
-
-        function toggleChildExpertise(expertiseId) {
-            const id = parseInt(expertiseId);
-            console.log(`Toggling child expertise: ${id} (currently active: ${Array.from(activeChildExpertises)})`);
-
-            if (activeChildExpertises.has(id)) {
-                activeChildExpertises.delete(id);
-                console.log(`Deselected child expertise: ${id}`);
-            } else {
-                activeChildExpertises.add(id);
-                console.log(`Selected child expertise: ${id}`);
-            }
-
-            // Update UI
-            renderChildExpertiseChips();
-            updateFilterCount();
-            renderList(currentSearchQuery);
-        }
-
-        function updateFilterCount() {
-            let filterText = '';
-            let filterColor = 'rgba(255, 255, 255, 0.5)';
-
-            if (activeMainExpertise || activeChildExpertises.size > 0) {
-                const mainExpertiseName = activeMainExpertise ?
-                    expertiseData.find(exp => exp.id === activeMainExpertise)?.name : '';
-
-                if (activeChildExpertises.size > 0) {
-                    filterText = `${mainExpertiseName} (${activeChildExpertises.size} spezifisch)`;
-                } else if (activeMainExpertise) {
-                    filterText = `${mainExpertiseName} (alle)`;
-                }
-                filterColor = '#4CAF50';
-            } else {
-                filterText = '(alle anzeigen)';
-            }
-
-            filterCountElement.textContent = filterText;
-            filterCountElement.style.color = filterColor;
-        }
-
-        function renderList(nameFilter = "") {
-            if (isLoading) return;
-
-            console.log('Rendering list with filter:', nameFilter);
-            console.log('Active main expertise:', activeMainExpertise);
-            console.log('Active child expertises:', Array.from(activeChildExpertises));
-            console.log('User location:', userLocation);
-            console.log('Available consultants:', consultants);
-
-            listContainer.innerHTML = "";
-
-            let filteredConsultants = consultants.filter(c => {
-                // Name/Stadt Filter
-                const matchesName = !nameFilter ||
-                    c.name.toLowerCase().includes(nameFilter.toLowerCase()) ||
-                    c.city.toLowerCase().includes(nameFilter.toLowerCase()) ||
-                    c.address.toLowerCase().includes(nameFilter.toLowerCase());
-
-                // Expertise Filter
-                const matchesExpertise = consultantMatchesExpertise(c);
-
-                console.log(`Consultant ${c.name}: matchesName=${matchesName}, matchesExpertise=${matchesExpertise}, city=${c.city}, expertise=${c.expertise}`);
-
-                return matchesName && matchesExpertise;
-            });
-
-            console.log('Filtered consultants:', filteredConsultants);
-
-            filteredConsultants.forEach(c => {
-                console.log('Creating element for:', c.name);
-
-                const item = document.createElement('div');
-                item.className = 'consultant';
-                item.onclick = () => window.open(c.link, '_blank');
-
-                // Fallback-Bild wenn das Laden fehlschlägt
-                const imgElement = document.createElement('img');
-                imgElement.src = c.image;
-                imgElement.alt = c.name;
-                imgElement.onerror = function () {
-                    this.src = `https://via.placeholder.com/50x50/1d4b73/ffffff?text=${encodeURIComponent(c.name.charAt(0))}`;
-                };
-
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'consultant-info';
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'consultant-name';
-                nameDiv.textContent = c.name;
-
-                const addressDiv = document.createElement('div');
-                addressDiv.className = 'consultant-address';
-                addressDiv.textContent = c.subtitle;
-
-                // Stadt anzeigen
-                if (c.city) {
-                    const cityDiv = document.createElement('div');
-                    cityDiv.className = 'consultant-city';
-                    cityDiv.textContent = c.city;
-                    infoDiv.appendChild(nameDiv);
-                    infoDiv.appendChild(addressDiv);
-                    infoDiv.appendChild(cityDiv);
-                } else {
-                    infoDiv.appendChild(nameDiv);
-                    infoDiv.appendChild(addressDiv);
-                }
-
-                // Entfernung anzeigen wenn verfügbar
-                if (c.distance !== null) {
-                    const distanceDiv = document.createElement('div');
-                    distanceDiv.className = 'consultant-distance';
-                    distanceDiv.textContent = `${Math.round(c.distance)} km entfernt`;
-                    infoDiv.appendChild(distanceDiv);
-                }
-
-                // Expertise anzeigen
-                if (c.expertise && c.expertise.length > 0) {
-                    const expertiseNames = getExpertiseNames(c.expertise);
-                    if (expertiseNames.length > 0) {
-                        const expertiseDiv = document.createElement('div');
-                        expertiseDiv.className = 'consultant-expertise';
-
-                        expertiseNames.forEach(name => {
-                            const tag = document.createElement('span');
-                            tag.className = 'expertise-tag';
-                            tag.textContent = name;
-                            expertiseDiv.appendChild(tag);
-                        });
-
-                        infoDiv.appendChild(expertiseDiv);
-                    }
-                }
-
-                item.appendChild(imgElement);
-                item.appendChild(infoDiv);
-                listContainer.appendChild(item);
-            });
-
-            // Detaillierte Fehlermeldungen wenn keine Ergebnisse gefunden wurden
-            if (filteredConsultants.length === 0 && consultants.length > 0) {
-                const noResults = document.createElement('div');
-                noResults.style.textAlign = 'center';
-                noResults.style.padding = '20px';
-                noResults.style.opacity = '0.7';
-                noResults.textContent = 'Keine Berater gefunden.';
-                listContainer.appendChild(noResults);
-            }
-
-            console.log('Render complete. List container children:', listContainer.children.length);
-        }
-
         // Event Listeners
-        // Unified search input events
         unifiedSearchInput.addEventListener('input', (e) => {
             currentSearchQuery = e.target.value;
-
-            // Debounce search
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 performUnifiedSearch(currentSearchQuery);
             }, 300);
-
-            // Immediate name filter for consultants
             renderList(currentSearchQuery);
         });
 
-        unifiedSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                searchResultsDropdown.style.display = 'none';
-                renderList(currentSearchQuery);
-            }
-        });
-
-        // Search button click
         searchButton.addEventListener('click', () => {
             searchResultsDropdown.style.display = 'none';
             renderList(currentSearchQuery);
         });
 
-        // Clear location button
         clearLocationButton.addEventListener('click', clearLocation);
 
-        // Hide search results when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('#unified-search')) {
                 searchResultsDropdown.style.display = 'none';
             }
         });
 
-        // Lade Daten beim Seitenstart
+        mainExpertiseSelect.addEventListener('change', () => {
+            childExpertiseSelect.value = '';
+            updateChildExpertiseDropdown();
+            renderList(currentSearchQuery);
+        });
+
+        childExpertiseSelect.addEventListener('change', () => {
+            renderList(currentSearchQuery);
+        });
+
+        // Initialization
         async function initializeData() {
-            console.log('Initializing data...');
-            // Lade Daten sofort beim Start
             await Promise.all([
                 fetchConsultants(),
                 fetchExpertise()
             ]);
-
-            // Rendere die Liste sofort nach dem Laden der Daten
             renderList();
         }
 
-        // Fallback falls DOMContentLoaded bereits gefeuert wurde
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeData);
         } else {
-            console.log('Page already loaded, initializing data immediately...');
-            // Warte einen kurzen Moment für DOM-Bereitschaft
             setTimeout(initializeData, 100);
         }
     })();
