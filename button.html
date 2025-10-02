@@ -25,6 +25,7 @@
         margin: 0 0 15px;
         font-size: 1.4rem;
         flex-shrink: 0;
+        color: #ffffff !important;
     }
 
     /* Consultant List Container */
@@ -141,17 +142,17 @@
     /* Search Results Dropdown */
     #search-results-dropdown {
         position: absolute;
-        top: 100%;
+        bottom: 100%;
         left: 0;
         right: 0;
         background: white;
         color: #333;
         border-radius: 4px;
-        margin-top: 2px;
+        margin-bottom: 2px;
         max-height: 200px;
         overflow-y: auto;
         display: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.15);
         z-index: 1000;
         border: 1px solid #ddd;
     }
@@ -452,6 +453,15 @@
             return R * c;
         }
 
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
         function getExpertiseNames(expertiseIds) {
             return expertiseIds
                 .map(id => expertiseData.find(exp => exp.id === id))
@@ -529,9 +539,29 @@
             results.forEach(result => {
                 const item = document.createElement('div');
                 item.className = 'search-result-item';
-                const typeTag = document.createElement('div');
-                typeTag.className = `search-result-type ${result.type}`;
-                typeTag.textContent = result.type === 'consultant' ? '👤' : '📍';
+
+                if (result.type === 'consultant') {
+                    // Create image element for consultant
+                    const imgElement = document.createElement('img');
+                    imgElement.src = result.data.image;
+                    imgElement.alt = result.data.name;
+                    imgElement.style.width = '40px';
+                    imgElement.style.height = '40px';
+                    imgElement.style.borderRadius = '4px';
+                    imgElement.style.objectFit = 'cover';
+                    imgElement.style.flexShrink = '0';
+                    imgElement.onerror = function () {
+                        this.src = `https://via.placeholder.com/40x40/1d4b73/ffffff?text=${encodeURIComponent(result.data.name.charAt(0))}`;
+                    };
+                    item.appendChild(imgElement);
+                } else {
+                    // Keep location icon for locations
+                    const typeTag = document.createElement('div');
+                    typeTag.className = `search-result-type ${result.type}`;
+                    typeTag.textContent = '📍';
+                    item.appendChild(typeTag);
+                }
+
                 const content = document.createElement('div');
                 content.className = 'search-result-content';
                 const name = document.createElement('div');
@@ -543,7 +573,6 @@
 
                 content.appendChild(name);
                 content.appendChild(details);
-                item.appendChild(typeTag);
                 item.appendChild(content);
                 item.onclick = () => selectSearchResult(result);
                 searchResultsDropdown.appendChild(item);
@@ -607,6 +636,10 @@
                     expertise: (c.expertise || []).map(id => parseInt(id)).filter(id => !isNaN(id)),
                     distance: null
                 }));
+
+                // Randomize the order of consultants on initial load
+                consultants = shuffleArray(consultants);
+
                 renderList();
             } catch (error) {
                 console.error('Fehler beim Laden der Berater:', error);
