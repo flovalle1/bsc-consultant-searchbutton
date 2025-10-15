@@ -10,7 +10,7 @@
         background-color: #204060;
         color: white;
         box-shadow: -2px 0 6px rgba(0, 0, 0, 0.3);
-        z-index: 2147483646;
+        z-index: 0;
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -109,6 +109,8 @@
     #footer-menu h4 {
         margin: 0 0 10px;
         font-size: 1rem;
+        font-family: Manrope, Arial, sans-serif;
+        color: #ffffff !important;
         opacity: 0.9;
     }
 
@@ -305,7 +307,7 @@
             right: 0 !important;
             left: 0 !important;
             /* Ensures it spans the entire screen from edge to edge */
-            padding: 15px 15px 0 15px !important;
+            padding: 15px 15px 30px 15px !important;
             /* Adjusted padding */
             max-width: none !important;
             min-width: 100vw !important;
@@ -358,6 +360,7 @@
     /* Force mobile layout class - JavaScript controlled */
     #expert-panel.mobile-layout {
         width: 100vw !important;
+        height: 95vh;
         right: 0 !important;
         left: 0 !important;
         padding: 15px 15px 0 15px !important;
@@ -746,7 +749,7 @@
             });
 
             if (filteredConsultants.length === 0) {
-                listContainer.innerHTML = '<div class="no-results">Keine Berater gefunden, die Ihren Kriterien entsprechen.</div>';
+                listContainer.innerHTML = '<div class="no-results">Keine Berater gefunden, die diesen Kriterien entsprechen.</div>';
                 return;
             }
 
