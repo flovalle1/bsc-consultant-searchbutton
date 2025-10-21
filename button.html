@@ -445,6 +445,12 @@
         const childExpertiseSelect = document.getElementById('child-expertise-select');
 
         // Utility Functions
+        function decodeHTMLEntities(text) {
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = text;
+            return textarea.value;
+        }
+
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Earth's radius in km
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -469,7 +475,7 @@
             return expertiseIds
                 .map(id => expertiseData.find(exp => exp.id === id))
                 .filter(exp => exp)
-                .map(exp => exp.name);
+                .map(exp => decodeHTMLEntities(exp.name));
         }
 
         // Search & Location Functions
@@ -660,7 +666,8 @@
                 expertiseData = rawData.map(exp => ({
                     ...exp,
                     id: parseInt(exp.id),
-                    parent: parseInt(exp.parent) || 0
+                    parent: parseInt(exp.parent) || 0,
+                    name: decodeHTMLEntities(exp.name)
                 }));
                 renderExpertiseDropdowns();
             } catch (error) {
